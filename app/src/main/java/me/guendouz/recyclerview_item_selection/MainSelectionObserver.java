@@ -2,24 +2,26 @@ package me.guendouz.recyclerview_item_selection;
 
 import static androidx.recyclerview.selection.SelectionTracker.SelectionObserver;
 
+import android.annotation.SuppressLint;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.selection.SelectionTracker;
 import timber.log.Timber;
 
-public class MainSelectionObserver extends SelectionObserver {
+@SuppressLint({"DefaultLocale", "SetTextI18n"})
+public class MainSelectionObserver extends SelectionObserver<String> {
 
   private final TextView tvSelectionCount;
-  private final SelectionTracker mSelectionTracker;
+  private final SelectionTracker<String> mSelectionTracker;
 
   public MainSelectionObserver(TextView tvSelectionCount,
-      SelectionTracker mSelectionTracker) {
+      SelectionTracker<String> mSelectionTracker) {
     this.tvSelectionCount = tvSelectionCount;
     this.mSelectionTracker = mSelectionTracker;
   }
 
   @Override
-  public void onItemStateChanged(@NonNull Object key, boolean selected) {
+  public void onItemStateChanged(@NonNull String key, boolean selected) {
     super.onItemStateChanged(key, selected);
     Timber.i("ItemStateChanged %s to %b", key, selected);
   }
