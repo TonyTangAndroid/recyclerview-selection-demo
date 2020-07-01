@@ -77,42 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
         mAdapter.setSelectionTracker(mSelectionTracker);
 
-        SelectionObserver observer = new SelectionObserver() {
-
-            @Override
-            public void onItemStateChanged(@NonNull Object key, boolean selected) {
-                super.onItemStateChanged(key, selected);
-                Timber.i("ItemStateChanged %s to %b", key, selected);
-            }
-
-            @Override
-            public void onSelectionRefresh() {
-                super.onSelectionRefresh();
-                Timber.i("onSelectionRefresh()");
-                tvSelectionCount.setText("Selection Count: 0");
-            }
-
-            @Override
-            public void onSelectionChanged() {
-                super.onSelectionChanged();
-                Timber.i("onSelectionChanged()");
-
-                if (mSelectionTracker.hasSelection()) {
-                    tvSelectionCount.setText(String
-                        .format("Selection Count: %d", mSelectionTracker.getSelection().size()));
-                } else {
-                    tvSelectionCount.setText("Selection Count: 0");
-                }
-            }
-
-            @Override
-            public void onSelectionRestored() {
-                super.onSelectionRestored();
-                Timber.i("onSelectionRestored()");
-                tvSelectionCount.setText("Selection Count: 0");
-            }
-        };
-        mSelectionTracker.addObserver(observer);
+        mSelectionTracker.addObserver(new MainSelectionObserver(tvSelectionCount,mSelectionTracker));
 
         if (savedInstanceState != null)
             mSelectionTracker.onRestoreInstanceState(savedInstanceState);
