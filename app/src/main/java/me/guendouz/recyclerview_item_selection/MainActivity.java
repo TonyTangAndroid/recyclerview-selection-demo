@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
     adapter.setSelectionTracker(tracker);
     tracker.addObserver(new MainSelectionObserver(tvSelectionCount, tracker));
-
+    tracker.select("B");
   }
 
 }
