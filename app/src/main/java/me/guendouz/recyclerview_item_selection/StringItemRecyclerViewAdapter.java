@@ -28,13 +28,13 @@ public class StringItemRecyclerViewAdapter extends RecyclerView.Adapter<StringIt
     /**
      * The SelectionTracker used by the RecyclerView, used mainly to update item's background color
      */
-    private SelectionTracker mSelectionTracker;
+    private SelectionTracker<String> mSelectionTracker;
 
     public StringItemRecyclerViewAdapter(List<String> mStrings) {
         this.mStrings = mStrings;
     }
 
-    public void setSelectionTracker(SelectionTracker mSelectionTracker) {
+    public void setSelectionTracker(SelectionTracker<String> mSelectionTracker) {
         this.mSelectionTracker = mSelectionTracker;
     }
 
@@ -80,7 +80,7 @@ public class StringItemRecyclerViewAdapter extends RecyclerView.Adapter<StringIt
          * Create a new {@link StringItemDetails} for each string item, will be used later by {@link StringItemDetailsLookup#getItemDetails(MotionEvent)}
          * @return {@link StringItemDetails} instance
          */
-        ItemDetails getItemDetails() {
+        StringItemDetails getItemDetails() {
             return new StringItemDetails(getAdapterPosition(), mStrings.get(getAdapterPosition()));
         }
     }

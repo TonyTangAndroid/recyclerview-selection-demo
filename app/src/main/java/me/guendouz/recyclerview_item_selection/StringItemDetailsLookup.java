@@ -12,7 +12,7 @@ import androidx.recyclerview.selection.ItemDetailsLookup;
  *  An implementation of a {@link ItemDetailsLookup} to be used to get details when a user make a selection of an item.
  */
 
-public class StringItemDetailsLookup extends ItemDetailsLookup {
+public class StringItemDetailsLookup extends ItemDetailsLookup<String> {
 
     private final RecyclerView mRecyclerView;
 
@@ -22,7 +22,7 @@ public class StringItemDetailsLookup extends ItemDetailsLookup {
 
     @Nullable
     @Override
-    public ItemDetails getItemDetails(@NonNull MotionEvent e) {
+    public StringItemDetails getItemDetails(@NonNull MotionEvent e) {
         View view = mRecyclerView.findChildViewUnder(e.getX(), e.getY());
         if (view != null) {
             RecyclerView.ViewHolder holder = mRecyclerView.getChildViewHolder(view);

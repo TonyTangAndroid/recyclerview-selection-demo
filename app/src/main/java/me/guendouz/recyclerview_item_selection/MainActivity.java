@@ -1,5 +1,7 @@
 package me.guendouz.recyclerview_item_selection;
 
+import static androidx.recyclerview.selection.SelectionTracker.*;
+
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private StringItemRecyclerViewAdapter mAdapter;
-    private SelectionTracker mSelectionTracker;
+    private SelectionTracker<String> mSelectionTracker;
 
     private Button btnClearSelection;
     private TextView tvSelectionCount;
@@ -75,7 +77,8 @@ public class MainActivity extends AppCompatActivity {
 
         mAdapter.setSelectionTracker(mSelectionTracker);
 
-        mSelectionTracker.addObserver(new SelectionTracker.SelectionObserver() {
+        SelectionObserver observer = new SelectionObserver() {
+
             @Override
             public void onItemStateChanged(@NonNull Object key, boolean selected) {
                 super.onItemStateChanged(key, selected);
@@ -95,7 +98,8 @@ public class MainActivity extends AppCompatActivity {
                 Timber.i("onSelectionChanged()");
 
                 if (mSelectionTracker.hasSelection()) {
-                    tvSelectionCount.setText(String.format("Selection Count: %d", mSelectionTracker.getSelection().size()));
+                    tvSelectionCount.setText(String
+                        .format("Selection Count: %d", mSelectionTracker.getSelection().size()));
                 } else {
                     tvSelectionCount.setText("Selection Count: 0");
                 }
@@ -107,7 +111,8 @@ public class MainActivity extends AppCompatActivity {
                 Timber.i("onSelectionRestored()");
                 tvSelectionCount.setText("Selection Count: 0");
             }
-        });
+        };
+        mSelectionTracker.addObserver(observer);
 
         if (savedInstanceState != null)
             mSelectionTracker.onRestoreInstanceState(savedInstanceState);
