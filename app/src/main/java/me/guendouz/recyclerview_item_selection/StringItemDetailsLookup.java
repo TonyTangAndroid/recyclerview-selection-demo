@@ -14,20 +14,20 @@ import androidx.recyclerview.selection.ItemDetailsLookup;
 
 public class StringItemDetailsLookup extends ItemDetailsLookup<String> {
 
-    private final RecyclerView mRecyclerView;
+    private final RecyclerView recyclerView;
 
     StringItemDetailsLookup(RecyclerView recyclerView) {
-        mRecyclerView = recyclerView;
+        this.recyclerView = recyclerView;
     }
 
     @Nullable
     @Override
     public StringItemDetails getItemDetails(@NonNull MotionEvent e) {
-        View view = mRecyclerView.findChildViewUnder(e.getX(), e.getY());
+        View view = recyclerView.findChildViewUnder(e.getX(), e.getY());
         if (view != null) {
-            RecyclerView.ViewHolder holder = mRecyclerView.getChildViewHolder(view);
-            if (holder instanceof StringItemRecyclerViewAdapter.ItemViewHolder) {
-                return ((StringItemRecyclerViewAdapter.ItemViewHolder) holder).getItemDetails();
+            RecyclerView.ViewHolder holder = recyclerView.getChildViewHolder(view);
+            if (holder instanceof ItemViewHolder) {
+                return ((ItemViewHolder) holder).getItemDetails();
             }
         }
         return null;

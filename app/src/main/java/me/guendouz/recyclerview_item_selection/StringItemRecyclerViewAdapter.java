@@ -3,85 +3,58 @@ package me.guendouz.recyclerview_item_selection;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.List;
 
 import androidx.recyclerview.selection.SelectionTracker;
 
-import static androidx.recyclerview.selection.ItemDetailsLookup.ItemDetails;
-
 /**
  * A basic RecyclerView adapter for strings.
  */
 
-public class StringItemRecyclerViewAdapter extends RecyclerView.Adapter<StringItemRecyclerViewAdapter.ItemViewHolder> {
+public class StringItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
 
     /**
      * List of strings to be shown
      */
-    private List<String> mStrings;
+    List<String> list;
     /**
      * The SelectionTracker used by the RecyclerView, used mainly to update item's background color
      */
-    private SelectionTracker<String> mSelectionTracker;
+    private SelectionTracker<String> selectionTracker;
 
-    public StringItemRecyclerViewAdapter(List<String> mStrings) {
-        this.mStrings = mStrings;
+    public StringItemRecyclerViewAdapter(List<String> list) {
+        this.list = list;
     }
 
-    public void setSelectionTracker(SelectionTracker<String> mSelectionTracker) {
-        this.mSelectionTracker = mSelectionTracker;
+    public void setSelectionTracker(SelectionTracker<String> tracker) {
+        this.selectionTracker = tracker;
     }
 
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item, parent, false);
-        return new ItemViewHolder(view);
+        return new ItemViewHolder(this, view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        String item = mStrings.get(position);
-        holder.bind(item, mSelectionTracker.isSelected(item));
+        String item = list.get(position);
+        holder.bind(item, selectionTracker.isSelected(item));
     }
 
     @Override
     public int getItemCount() {
-        return mStrings == null ? 0 : mStrings.size();
+        return list == null ? 0 : list.size();
     }
 
     @Override
     public long getItemId(int position) {
-        return mStrings.get(position).hashCode();
+        return list.get(position).hashCode();
     }
 
-    class ItemViewHolder extends RecyclerView.ViewHolder {
-
-        private TextView textView;
-
-        ItemViewHolder(@NonNull View itemView) {
-            super(itemView);
-            textView = (TextView) itemView;
-        }
-
-        void bind(String item, boolean isSelected) {
-            textView.setText(item);
-            // If the item is selected then we change its state to activated
-            textView.setActivated(isSelected);
-        }
-
-        /**
-         * Create a new {@link StringItemDetails} for each string item, will be used later by {@link StringItemDetailsLookup#getItemDetails(MotionEvent)}
-         * @return {@link StringItemDetails} instance
-         */
-        StringItemDetails getItemDetails() {
-            return new StringItemDetails(getAdapterPosition(), mStrings.get(getAdapterPosition()));
-        }
-    }
 }

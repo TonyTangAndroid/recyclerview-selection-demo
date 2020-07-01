@@ -1,10 +1,8 @@
 package me.guendouz.recyclerview_item_selection;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.selection.SelectionPredicates;
 import androidx.recyclerview.selection.SelectionTracker;
@@ -31,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
       "L"
   );
 
-  private SelectionTracker<String> mSelectionTracker;
+  private SelectionTracker<String> tracker;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -39,36 +37,30 @@ public class MainActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main);
 
     Button btnClearSelection = findViewById(R.id.btnClearSelection);
-    btnClearSelection.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        if (mSelectionTracker.hasSelection()) {
-          mSelectionTracker.clearSelection();
-        }
+    btnClearSelection.setOnClickListener(view -> {
+      if (tracker.hasSelection()) {
+        tracker.clearSelection();
       }
     });
 
     TextView tvSelectionCount = findViewById(R.id.tvSelectionCount);
 
-    RecyclerView mRecyclerView = findViewById(R.id.itemsRecyclerView);
-    mRecyclerView.setHasFixedSize(true);
-    mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    RecyclerView recyclerView = findViewById(R.id.itemsRecyclerView);
+    recyclerView.setHasFixedSize(true);
+    recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    StringItemRecyclerViewAdapter adapter = new StringItemRecyclerViewAdapter(ITEMS);
+    recyclerView.setAdapter(adapter);
 
-    StringItemRecyclerViewAdapter mAdapter = new StringItemRecyclerViewAdapter(ITEMS);
-    mRecyclerView.setAdapter(mAdapter);
-
-    mSelectionTracker = new SelectionTracker.Builder<>(
+    tracker = new SelectionTracker.Builder<>(
         "string-items-selection",
-        mRecyclerView,
+        recyclerView,
         new StringItemKeyProvider(1, ITEMS),
-        new StringItemDetailsLookup(mRecyclerView),
+        new StringItemDetailsLookup(recyclerView),
         StorageStrategy.createStringStorage()
-    ).withSelectionPredicate(SelectionPredicates.<String>createSelectAnything())
-        .build();
+    ).withSelectionPredicate(SelectionPredicates.createSelectAnything()).build();
 
-    mAdapter.setSelectionTracker(mSelectionTracker);
-
-    mSelectionTracker.addObserver(new MainSelectionObserver(tvSelectionCount, mSelectionTracker));
+    adapter.setSelectionTracker(tracker);
+    tracker.addObserver(new MainSelectionObserver(tvSelectionCount, tracker));
 
   }
 

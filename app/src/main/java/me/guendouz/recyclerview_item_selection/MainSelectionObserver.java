@@ -11,13 +11,12 @@ import timber.log.Timber;
 @SuppressLint({"DefaultLocale", "SetTextI18n"})
 public class MainSelectionObserver extends SelectionObserver<String> {
 
-  private final TextView tvSelectionCount;
-  private final SelectionTracker<String> mSelectionTracker;
+  private final TextView tvStatus;
+  private final SelectionTracker<String> tracker;
 
-  public MainSelectionObserver(TextView tvSelectionCount,
-      SelectionTracker<String> mSelectionTracker) {
-    this.tvSelectionCount = tvSelectionCount;
-    this.mSelectionTracker = mSelectionTracker;
+  public MainSelectionObserver(TextView tvStatus, SelectionTracker<String> tracker) {
+    this.tvStatus = tvStatus;
+    this.tracker = tracker;
   }
 
   @Override
@@ -30,19 +29,17 @@ public class MainSelectionObserver extends SelectionObserver<String> {
   public void onSelectionRefresh() {
     super.onSelectionRefresh();
     Timber.i("onSelectionRefresh()");
-    tvSelectionCount.setText("Selection Count: 0");
+    tvStatus.setText("Selection Count: 0");
   }
 
   @Override
   public void onSelectionChanged() {
     super.onSelectionChanged();
     Timber.i("onSelectionChanged()");
-
-    if (mSelectionTracker.hasSelection()) {
-      tvSelectionCount.setText(String
-          .format("Selection Count: %d", mSelectionTracker.getSelection().size()));
+    if (tracker.hasSelection()) {
+      tvStatus.setText(String.format("Selection Count: %d", tracker.getSelection().size()));
     } else {
-      tvSelectionCount.setText("Selection Count: 0");
+      tvStatus.setText("Selection Count: 0");
     }
   }
 
@@ -50,6 +47,6 @@ public class MainSelectionObserver extends SelectionObserver<String> {
   public void onSelectionRestored() {
     super.onSelectionRestored();
     Timber.i("onSelectionRestored()");
-    tvSelectionCount.setText("Selection Count: 0");
+    tvStatus.setText("Selection Count: 0");
   }
 }
