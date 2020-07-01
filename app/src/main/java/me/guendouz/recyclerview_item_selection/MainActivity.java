@@ -70,16 +70,6 @@ public class MainActivity extends AppCompatActivity {
 
     mSelectionTracker.addObserver(new MainSelectionObserver(tvSelectionCount, mSelectionTracker));
 
-    if (savedInstanceState != null) {
-      mSelectionTracker.onRestoreInstanceState(savedInstanceState);
-    }
-
-  }
-
-  @Override
-  protected void onSaveInstanceState(@NonNull Bundle outState) {
-    super.onSaveInstanceState(outState);
-    mSelectionTracker.onSaveInstanceState(outState);
   }
 
 }
